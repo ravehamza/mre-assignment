@@ -1,0 +1,39 @@
+<div class="container" style="background-color: white">
+  <div class="row justify-content-between mb-3">
+    <div class="row mt-3">
+      <div class="col-lg-4">
+        <input type="text" class="form-control" placeholder="Search Customer" />
+      </div>
+      <div class="col-lg-8 text-right d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="goToCreate()"
+        >
+          Add New Customer
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="card" *ngIf="data$ | async as items">
+    <div class="table-responsive">
+      <table class="table">
+        <thead style="background-color: whitesmoke">
+          <tr>
+            <td>Customer Name</td>
+            <td>Business Name</td>
+            <td>Address</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items">
+            <td *ngFor="let x of item.contactinfo">{{ x.name }}</td>
+            <td>{{ item.businessName }}</td>
+            <td>{{ item.address }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <br />
+</div>

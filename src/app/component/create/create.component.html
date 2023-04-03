@@ -1,0 +1,285 @@
+<div class="container" style="background-color: white">
+  <form [formGroup]="form">
+    <p class="fw-bold px-1" style="padding-top: 15px">Add new customer</p>
+    <div class="card p-3 border-style">
+      <p class="fw-bold">Business Information</p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Business Name</label>
+          <input
+            type="email"
+            class="form-control"
+            formControlName="businessName"
+            placeholder="Enter business name"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter address"
+            formControlName="address"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Add Group</label>
+          <select
+            class="form-select"
+            [(ngModel)]="selectedOption"
+            formControlName="groupName"
+            (change)="selectOption($event)"
+          >
+            <option value="" disabled selected>Select Group</option>
+            <option value="1">Add Group</option>
+            <option *ngFor="let option of groupOption" [ngValue]="option">
+              {{ option }}
+            </option>
+          </select>
+        </div>
+        <ng-container *ngIf="data$ | async as items">
+          <div
+            class="col-md-6 d-flex align-items-end"
+            *ngIf="items.length === 0"
+          >
+            <span>
+              <i class="fa-thin fa-plus fa-2xl" style="color: #005eff"></i>
+              <button
+                type="button"
+                class="btn btn-link"
+                (click)="addContact()"
+                style="margin: 0; padding: 0"
+              >
+                Add Contact
+              </button>
+            </span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <ng-container formArrayName="contactinfo">
+      <div *ngFor="let c of contactInfo().controls; let i = index">
+        <div class="card p-3 mt-3 border-style" [formGroupName]="i">
+          <p class="fw-bold">Add Contact</p>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label">Type</label>
+              <select type="text" formControlName="type" class="form-select">
+                <option value="" disabled selected>Select type</option>
+                <option *ngFor="let x of typeOption" [value]="x">
+                  {{ x }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter name"
+                formControlName="name"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Legal Name</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter legal name"
+                formControlName="legalName"
+              />
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Phone Number</label>
+
+              <ng-container formArrayName="phoneNumber">
+                <div class="col-md-12">
+                  <div
+                    *ngFor="let p of contactPhone(i).controls; let pi = index"
+                  >
+                    <div [formGroupName]="pi" class="mb-2">
+                      <input
+                        type="text"
+                        formControlName="phone"
+                        class="form-control"
+                        placeholder="Enter phone#"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <button
+                type="button"
+                class="btn btn-link"
+                style="text-decoration: none; font-size: small"
+                (click)="addContactPhone(i)"
+              >
+                Add more
+              </button>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label">Email Address</label>
+
+              <ng-container formArrayName="emailAddress">
+                <div class="col-md-12">
+                  <div
+                    *ngFor="let e of contactEmail(i).controls; let ei = index"
+                  >
+                    <div [formGroupName]="ei" class="mb-2">
+                      <input
+                        type="text"
+                        formControlName="email"
+                        class="form-control"
+                        placeholder="Enter email address"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <button
+                type="button"
+                class="btn btn-link"
+                style="text-decoration: none; font-size: small"
+                (click)="addContactEmail(i)"
+              >
+                Add more
+              </button>
+            </div>
+            <div class="col-md-4 d-flex align-items-center justify-content-end">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                style="width: 100px"
+                (click)="removeContactControl(i)"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary"
+                style="margin-left: 5px; width: 100px"
+                (click)="getValue()"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="data$ | async as items">
+      <div class="card p-3 mt-3 border-style" *ngIf="items.length > 0">
+        <p class="fw-bold">Contact</p>
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-12">
+              <div class="card mt-1 table-responsive">
+                <table class="table table-borderless">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Type</th>
+                      <th>Name</th>
+                      <th>Legal Name</th>
+                      <th>Phone Number</th>
+                      <th>Email Address</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let contactinfo of items; let x = index">
+                    <tr
+                      *ngFor="let it of contactinfo.contactinfo; let id = index"
+                    >
+                      <td>{{ x + 1 }}</td>
+                      <td>{{ it.type }}</td>
+                      <td>{{ it.name }}</td>
+                      <td>{{ it.legalName }}</td>
+                      <td>
+                        {{ it.phoneNumber[0].phone }}
+
+                        <ng-container
+                          *ngFor="let ph of it.phoneNumber; let px = index"
+                        >
+                          <i
+                            *ngIf="px > 0"
+                            [ngbPopover]="ph.phone"
+                            class="fa-solid fa-circle-exclamation"
+                          ></i>
+                        </ng-container>
+                      </td>
+
+                      <td>
+                        {{ it.emailAddress[0].email }}
+
+                        <ng-container
+                          *ngFor="let ph of it.emailAddress; let px = index"
+                        >
+                          <i
+                            *ngIf="px > 0"
+                            [ngbPopover]="ph.email"
+                            placement="bottom"
+                            class="fa-solid fa-circle-exclamation"
+                          ></i>
+                        </ng-container>
+                      </td>
+                      <td><i class="fa-regular fa-pen-to-square"></i></td>
+                      <td>
+                        <i
+                          class="fa-solid fa-trash"
+                          (click)="deleteContact(x)"
+                        ></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-1">
+          <i class="fa-thin fa-plus fa-2xl" style="color: #005eff"></i>
+          <button
+            type="button"
+            class="btn btn-link"
+            (click)="addContact()"
+            style="margin: 0; padding: 0"
+          >
+            Add More Contact
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </form>
+  <br />
+</div>
+
+<div class="modal modal-backdrop" [ngStyle]="{ display: displayStyle }">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Enter Group Name</h4>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="close()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter group name"
+            [formControl]="modalGroupName"
+          />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="savePopup()">
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

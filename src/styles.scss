@@ -1,1 +1,42 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+body {
+  background-color: whitesmoke;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  color: white;
+  background-color: red;
+  border-bottom: none;
+}
+
+.nav-tabs .nav-item .nav-link.active::after {
+  border-bottom: none;
+}
+
+.nav-tabs .nav-item .nav-link {
+  color: black;
+  background-color: white;
+}
+
+.sep {
+  margin-left: 0.7rem;
+}
+
+.nav {
+  border-bottom: 2px solid red;
+}
+
+.nav-tabs > li > a {
+  border: none;
+}
+
+th,
+td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 30px;
+  padding-right: 40px;
+}

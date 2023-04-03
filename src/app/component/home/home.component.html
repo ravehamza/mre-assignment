@@ -1,0 +1,20 @@
+<div class="container mt-5">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        [ngClass]="{ active: isListRoute() }"
+        (click)="goToList()"
+        >Customer list</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link sep" [ngClass]="{ active: isAddCustomerRoute() }"
+        >Add new customer</a
+      >
+    </li>
+  </ul>
+  <div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
